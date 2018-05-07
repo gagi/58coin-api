@@ -1,9 +1,7 @@
 # 58Coin REST API for Spot Trade
 This document covers the details of 58Coin REST APIs which were used to access your accounts, manage your orders and retrieve spot market data.
 
-[TOC]
 
-<br/><br/><br/><br/><br/><br/>
 
 ----
 ## General
@@ -124,20 +122,23 @@ Place a new order to buy or sell the assets.
 Request frequency 20 times/2s
 
 **Common Parameters**
+
 | Name | Type | Required | Description |
-|:- |:- |:- |:- |
+| :----- | :------- | :--------- | :---------------- |
 | client_oid | string | no | Your custom order ID |
 | symbol | string | yes | The symbol of the currency pair |
 | type | string | yes | "limit" or "market" |
 | side | string | yes | "buy" or "sell" |
 
 **Limit Order Parameters**
+
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
 | price | string | yes | Price to buy or sell at  |
 | amount | string | yes | How much you want to buy or sell |
 
 **Market Order Parameters**
+
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
 | amount | string | yes | How much you want to buy or sell |
@@ -160,7 +161,7 @@ Request frequency 20 times/2s
   }
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 #### Cancel an Order
@@ -170,6 +171,7 @@ Cancel a previously placed order.
 Request frequency 20 times/2s
 
 **Parameters**
+
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -193,7 +195,7 @@ Request frequency 20 times/2s
   }
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 #### Get an Order
@@ -203,6 +205,7 @@ Get the information of an order.
 Request frequency 10 times/2s
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -227,7 +230,6 @@ Request frequency 10 times/2s
 }
 ```
 
-<br/><br/><br/><br/><br/><br/>
 #### Get Orders
 Get a list of your orders.
 > GET spot/my/orders
@@ -235,6 +237,7 @@ Get a list of your orders.
 Request frequency 10 times/2s
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -262,7 +265,7 @@ Request frequency 10 times/2s
   ]
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 ### Historical Data
@@ -275,6 +278,7 @@ Get a list of your past trades.
 Request frequency 10 times/2s
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -301,7 +305,7 @@ Request frequency 10 times/2s
   ]
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 ## Public Endpoints
@@ -312,6 +316,7 @@ Get 24 hour statistics for currency pair.
 > GET spot/ticker
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | no | The symbol of the currency pair |
@@ -346,7 +351,7 @@ Get 24 hour statistics for currency pair.
   ]
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 ### Order Book
@@ -354,6 +359,7 @@ Get a list of active orders for a currency pair.
 > GET spot/order_book
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -386,6 +392,7 @@ Get a list of latest trades for a currency pair.
 > GET spot/trades
 
 **Parameters**
+
 | Name | Type | Required | Description  |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -402,7 +409,7 @@ Get a list of latest trades for a currency pair.
   ]
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 ### Candles
@@ -410,6 +417,7 @@ Get a list of candlestick chart data.
 > GET spot/candles
 
 **Parameters**
+
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
@@ -434,7 +442,7 @@ Get a list of candlestick chart data.
   ]
 }
 ```
-<br/><br/><br/><br/><br/><br/>
+
 
 ----
 ## Reference
