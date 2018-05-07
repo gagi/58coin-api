@@ -14,7 +14,7 @@ https://api.58coin.com/v1/<endpoint>
 
 ### Responses
 A successful response is returned with a single JSON object as follows.
-``` json
+```node
 {
   "result": <a JSON object or array>
 }
@@ -23,11 +23,13 @@ A successful response is returned with a single JSON object as follows.
 
 ### Errors
 When the request encounters an error, the response contains a error member with a value that is an object as follows.
-``` json
+```python
 {
   "error": {
-    "code": 10001,    // error code
-    "message": "string"  // error message
+    // error code
+    "code": 10001, 
+    // error message
+    "message": "string"  
   }
 }
 ```
@@ -77,7 +79,7 @@ Request frequency 10 times/2s
 None
 
 **Response**
-```json
+```node
 {
   "result": [
     {
@@ -144,7 +146,7 @@ Request frequency 20 times/2s
 | amount | string | yes | How much you want to buy or sell |
 
 **Response**
-```json
+```node
 {
   "result": {
     "order_id": "4303100732",
@@ -245,7 +247,7 @@ Request frequency 10 times/2s
 | limit | int | no | Limit the number of records returned (default is 10, max is 100) |
 
 **Response**
-```json
+```node
 {
   "result": [
     {
@@ -261,7 +263,7 @@ Request frequency 10 times/2s
       "status": "active",
       "created_time": 1521142156000
     },
-	...
+    ...
   ]
 }
 ```
@@ -286,7 +288,7 @@ Request frequency 10 times/2s
 | limit | int | no | Limit the number of records returned (default is 50, max is 500) |
 
 **Response**
-```json
+```node
 {
   "result": [
     {
@@ -322,7 +324,7 @@ Get 24 hour statistics for currency pair.
 | symbol | string | no | The symbol of the currency pair |
 
 **Response**
-``` json
+```node
 {
   "result": [
     {
@@ -366,7 +368,7 @@ Get a list of active orders for a currency pair.
 | limit | int | no | Limit the number of records returned (default is 60, max is 200) |
 
 **Response**
-```json
+```node
 {
   "result": {
     "bids": [
@@ -399,7 +401,7 @@ Get a list of latest trades for a currency pair.
 | limit | int | no | Limit the number of records returned (default is 50, max is 500) |
 
 **Response**
-```json
+```node
 {
   "result": [
     // [ time, price, amount, side ]
@@ -426,7 +428,7 @@ Get a list of candlestick chart data.
 | limit | int | no | Limit the number of records returned (default is 200, max is 1000) |
 
 **Response**
-```json
+```node
 {
   "result": [
     [
