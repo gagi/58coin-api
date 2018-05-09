@@ -69,7 +69,43 @@ https://api.58coin.com/v1/<endpoint>
 
 > signature = HMAC-SHA256(queryString, secretKey)
 
-<br/><br/><br/><br/><br/><br/>
+
+签名字符串算法：首先对api_key和参数一块进行自然排序，然后把API secret和时间戳添加到请求参数的最后，然后加密，例如：spot/my/order/place这个下单接口
+
+参数包括client_oid，symbol，type，side，api_key这几个。
+
+（1）对上述参数自然排序
+
+ 结果：
+
+ api_key,client_oid，side，symbol，type
+
+所以目前形式是这样：spot/my/order/place？api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx
+
+（2）把api secret和时间戳拼到后面
+
+ 最终形式是：spot/my/order/place？api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+（3）加密
+
+ 可能对于普通的接口上面的工作就足够了，不过为了您的安全，这里需要再进行一步加密操作，保证您的操作不会被泄露，只需要对上述url问号后面的部分和您的secretKey进行HmacSHA256加密，生成一个签名：
+
+例如您的secretKey=abcdefg
+
+上面url问号后面的部分是：api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+所以queryString=api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+签名公式：
+
+	signature = HMAC-SHA256(queryString, secretKey)；
+
+带入公式即可。
+
+再对签名进行base64加密，这就是X-58COIN-SIGNATURE需要的内容。
+
+
+<br/><br/><br/><br/><br/>
 
 ----
 ### 账户 
