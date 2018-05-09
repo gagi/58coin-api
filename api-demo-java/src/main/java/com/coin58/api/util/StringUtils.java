@@ -29,7 +29,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         params.sort(Comparator.comparing(NameValuePair::getName));
         params.add(new NameObjectPair(API_SECRET, secretKey));
         params.add(new NameObjectPair(TIMESTAMP, timestamp));
-        String stringForSign = buildStringForSign(params, secretKey);
+        String stringForSign = buildStringForSign(params);
         return HmacUtils.getHmacSha256(secretKey.getBytes()).doFinal(stringForSign.getBytes());
     }
 
@@ -41,10 +41,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * 生成用于加密的字符串
      *
      * @param params    请求参数
-     * @param secretKey key
      * @return 用于加密的字符串
      */
-    private static String buildStringForSign(List<NameValuePair> params, String secretKey) {
+    private static String buildStringForSign(List<NameValuePair> params) {
         StringBuilder res = new StringBuilder();
         List<String> paramsList = new ArrayList<>();
         for (NameValuePair pair : params) {
