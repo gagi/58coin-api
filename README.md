@@ -423,7 +423,7 @@ Get a list of candlestick chart data.
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
-| period | string | yes | Desired interval like "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "3day", "7day" |
+| period | string | yes | Desired interval like "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "7day" |
 | since | long | no |  |
 | limit | int | no | Limit the number of records returned (default is 200, max is 1000) |
 
