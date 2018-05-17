@@ -506,7 +506,7 @@ None
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | 货币对的名称。 |
-| period | string | yes | 如 "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "3day", "7day" |
+| period | string | yes | 如 "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day",  "1week" |
 | since | long | no |  |
 | limit | int | no | 每页返回最大记录数(默认为200，最大值为1000) |
 
