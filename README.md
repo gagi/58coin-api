@@ -406,7 +406,7 @@ Get a list of latest trades for a currency pair.
   "result": [
     // [ time, price, amount, side ]
     [ 1521119063078, "0.020022", "0.018", "buy" ],
-    [ 1521119063078, "0.020022", "0.018", "sell" ],
+    [ 1521119063078, "0.020022", "-0.018", "sell" ],
     ...
   ]
 }
