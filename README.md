@@ -61,7 +61,7 @@ All Private requests must contain the following headers:
 #### Signing a Message
 The signature is the hex digest of an HMAC-SHA256 hash where the message is your query string and the secret key is your API secret.
 
-> signature = HMAC-SHA256(queryString, secretKey)
+> signature = Hex.encodeHex(HMAC-SHA256(queryString, secretKey),UPPER)
 
 <br/><br/><br/><br/><br/><br/>
 
