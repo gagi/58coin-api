@@ -98,7 +98,7 @@ https://api.58coin.com/v1/<endpoint>
 
 签名公式：
 
-	signature = HMAC-SHA256(queryString, secretKey)；
+	signature = Hex.encodeHex(HMAC-SHA256(queryString, secretKey),UPPER)；
 
 带入公式即可。
 
