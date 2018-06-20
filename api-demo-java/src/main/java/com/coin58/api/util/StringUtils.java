@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.springframework.util.Base64Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,10 +28,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     private static byte[] buildSignSHA256Hex(List<NameValuePair> params, String secretKey, String timestamp) {
         params.sort(Comparator.comparing(NameValuePair::getName));
-        params.add(new NameObjectPair(API_SECRET, secretKey));
+        NameValuePair secret = new NameObjectPair(API_SECRET, secretKey);
+        params.add(secret);
         params.add(new NameObjectPair(TIMESTAMP, timestamp));
         String stringForSign = buildStringForSign(params);
-        return HmacUtils.getHmacSha256(secretKey.getBytes()).doFinal(stringForSign.getBytes());
+        byte[] result = HmacUtils.getHmacSha256(secretKey.getBytes()).doFinal(stringForSign.getBytes());
+        params.remove(secret);
+        return result;
     }
 
     public static String base64Sha256Hex(List<NameValuePair> params, String secretKey, String timestamp) {
@@ -40,7 +44,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 生成用于加密的字符串
      *
-     * @param params    请求参数
+     * @param params 请求参数
      * @return 用于加密的字符串
      */
     private static String buildStringForSign(List<NameValuePair> params) {
