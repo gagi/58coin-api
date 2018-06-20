@@ -66,6 +66,41 @@ The signature is the hex digest of an HMAC-SHA256 hash where the message is your
 <br/><br/><br/><br/><br/><br/>
 
 ----
+### product
+
+----
+#### All Currency pair
+
+> GET product/list
+
+Request frequency 10 times/2s
+
+**Parameters**
+
+| Name | Type | Required | Description |
+
+| :- | :- | :- | :- |
+
+| name | string | no | null |
+
+**Response**
+
+```json
+{
+  "result": {
+    "name": "BTC/USDT",
+     "baseCurrencyName": "BTC",
+     "quoteCurrencyName": "USDT",
+     "baseMinSize": "0.001",
+     "baseIncrement": "0.001",
+     "quoteIncrement": "0.0.01"
+  }
+}
+```
+
+<br/><br/><br/><br/><br/><br/>
+
+----
 ### Accounts
 
 ----

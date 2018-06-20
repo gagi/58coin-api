@@ -104,6 +104,40 @@ https://api.58coin.com/v1/<endpoint>
 
 再对签名进行base64加密，这就是X-58COIN-SIGNATURE需要的内容。
 
+<br/><br/><br/><br/><br/><br/>
+
+----
+### 交易对
+
+----
+#### 获取所有交易对信息
+
+> GET product/list
+
+
+**传参**
+
+| Name | Type | Required | Description |
+
+| :- | :- | :- | :- |
+
+| name | string | no | null |
+
+**返回数据样本**
+
+```json
+
+{
+  "result": {
+    "name": "BTC/USDT",
+     "baseCurrencyName": "BTC",
+     "quoteCurrencyName": "USDT",
+     "baseMinSize": "0.001",
+     "baseIncrement": "0.001",
+     "quoteIncrement": "0.0.01"
+  }
+}
+```
 
 <br/><br/><br/><br/><br/>
 
