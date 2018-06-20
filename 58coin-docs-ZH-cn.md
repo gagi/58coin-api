@@ -1,85 +1,131 @@
-# 58Coin REST API for Spot Trade
-This document covers the details of 58Coin REST APIs which were used to access your accounts, manage your orders and retrieve spot market data.
+# 用于现货交易的58Coin REST API。 
+
+本文件涵盖了58Coin REST api的详细信息，这些api用于访问您的帐户、管理您的订单和检索现货市场数据。 
 
 
+<br/><br/><br/><br/><br/><br/>
 
 ----
-## General
-The 58Coin REST API is HTTP-based. You can use it with any programming language that has an HTTP library.
+## 说明
+58Coin REST API是基于http的。您可以使用任何具有HTTP库的编程语言连接API。 
 
 ### URL
 ``` xml
 https://api.58coin.com/v1/<endpoint>
 ```
 
-### Responses
-A successful response is returned with a single JSON object as follows.
-```node
+### 返回正确
+一个成功的返回是一个JSON对象，如下所示。 
+
+``` json
 {
   "result": <a JSON object or array>
 }
 ```
-- **result**: A structured value that holds the content of the response. This member may contain String, JSON object or JSON array value.
+- 结果:包含返回内容的结构化值。该元素可能是字符串、JSON对象或JSON数组值。 
 
-### Errors
-When the request encounters an error, the response contains a error member with a value that is an object as follows.
-```python
+### 返回错误
+当请求遇到错误时，返回结果包含一个带有code的错误信息，如下所示。 
+
+``` json
 {
   "error": {
-    // error code
-    "code": 10001, 
-    // error message
-    "message": "string"  
+    "code": 10001,    // error code
+    "message": "string"  // error message
   }
 }
 ```
-To get more about error codes and messages, please refer to [Error Code](#Error Code)
+要获取更多关于错误代码和消息的信息，请参考本文档结尾处的参考。 
 <br/><br/><br/><br/><br/><br/>
 
 ----
-## Private Endpoints
-The private endpoints are available for account management and order management. All private endpoints require authentication.
+### 私人接口
 
-### Authentication
+私有接口可用于帐户管理和订单管理。所有私有接口都需要身份验证。 
+
+### 身份验证 
 
 ----
-#### Generating an API Key
-In order to access the private endpoints, you must generate an API key and an Secret key using this page.
+### 生成一个API key 
+
+为了访问私有接口，您必须在官网生成一个API key和一个API secret。 
 <br/><br/><br/><br/><br/><br/>
 
 ----
-#### Creating a Request
-All Private requests must contain the following headers:
+### 创建一个请求 
 
-- **X-58COIN-APIKEY** The API key as a string.
-- **X-58COIN-SIGNATURE** The base64-encoded signature.
-- **X-58COIN-TIMESTAMP** The timestamp for the request.
+所有私有请求必须包含以下HTTP headers: 
 
-<br/><br/><br/><br/><br/><br/>
-
-----
-#### Signing a Message
-The signature is the hex digest of an HMAC-SHA256 hash where the message is your query string and the secret key is your API secret.
-
-> signature = Hex.encodeHex(HMAC-SHA256(queryString, secretKey),UPPER)
+- **X-58COIN-APIKEY** API key。
+- **X-58COIN-SIGNATURE** base64加密的签名字符串。
+- **X-58COIN-TIMESTAMP** 用于请求的时间戳。
 
 <br/><br/><br/><br/><br/><br/>
 
 ----
-### Accounts
+### 签名字符串 
+
+签名字符串是一个经过HMAC-SHA256算法加密后的16进制字符串,其中加密信息是您的查询字符串，而秘钥是您的API secret 
+
+> signature = HMAC-SHA256(queryString, secretKey)
+
+
+签名字符串算法：首先对api_key和参数一块进行自然排序，然后把API secret和时间戳添加到请求参数的最后，然后加密，例如：spot/my/order/place这个下单接口
+
+参数包括client_oid，symbol，type，side，api_key这几个。
+
+（1）对上述参数自然排序
+
+ 结果：
+
+ api_key,client_oid，side，symbol，type
+
+所以目前形式是这样：spot/my/order/place？api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx
+
+（2）把api secret和时间戳拼到后面
+
+ 最终形式是：spot/my/order/place？api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+（3）加密
+
+ 可能对于普通的接口上面的工作就足够了，不过为了您的安全，这里需要再进行一步加密操作，保证您的操作不会被泄露，只需要对上述url问号后面的部分和您的secretKey进行HmacSHA256加密，生成一个签名：
+
+例如您的secretKey=abcdefg
+
+上面url问号后面的部分是：api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+所以queryString=api_key=xx&client_oid=xx&side=xx&symbol=xx&type=xx&api_secret=xx&timestamp=xx
+
+签名公式：
+
+	signature = Hex.encodeHex(HMAC-SHA256(queryString, secretKey),UPPER)；
+
+带入公式即可。
+
+再对签名进行base64加密，这就是X-58COIN-SIGNATURE需要的内容。
+
+
+<br/><br/><br/><br/><br/>
 
 ----
-#### View accounts
-Get a list of your spot trading accounts.
-> GET spot/my/accounts
+### 账户 
 
-Request frequency 10 times/2s
+----
+#### 查看账户 
 
-**Parameters**
+获取你的现货交易账户的资产列表。
+
+GET spot/my/accounts
+
+请求频率10次/2s
+
+##### 参数 
+
 None
 
-**Response**
-```node
+##### 返回值
+
+```json
 {
   "result": [
     {
@@ -104,49 +150,60 @@ None
 <br/><br/><br/><br/><br/><br/>
 
 ----
-### Orders
+### 订单 
 
 ----
-#### Order Status
-An valid order may have four following status values during its life cycle.
-- **Received**: The order is sent to the matching engine.
-- **Active**: The order is not fully filled immediately, and it will stay in the active state until cancelled or subsequently filled by new orders.
-- **Finished**: The order is fully filled.
-- **Cancelling**: The order is cancelled but the remaining holds have not been removed.  
-- **Cancelled**: The order is cancelled.
-<br/><br/><br/><br/><br/><br/>
+#### 订单状态 
+
+一个订单有效的顺序可能在其生命周期中有四个状态值。 
+
+- Received:订单被发送到匹配的引擎。 
+
+- Active:订单没有立即完全成交，并且它将保持在活动状态直到取消或随后订单完全成交。 
+
+- Finished:订单已完全成交。 
+
+- Cancelling:撤单中。 
+
+- Cancelled:订单已取消。 
+
+  
+  <br/><br/><br/><br/><br/><br/>
 
 ----
-#### Place a New Order
-Place a new order to buy or sell the assets.
+#### 下一个新订单 
+
+买卖资产的新订单。 
+
 > POST spot/my/order/place
 
-Request frequency 20 times/2s
+请求频率20次/2s  
 
-**Common Parameters**
-
-| Name | Type | Required | Description |
-| :----- | :------- | :--------- | :---------------- |
-| client_oid | string | no | Your custom order ID |
-| symbol | string | yes | The symbol of the currency pair |
-| type | string | yes | "limit" or "market" |
-| side | string | yes | "buy" or "sell" |
-
-**Limit Order Parameters**
+##### 常见的参数 
 
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
-| price | string | yes | Price to buy or sell at  |
-| amount | string | yes | How much you want to buy or sell |
+| client_oid | string | no | 您的自定义订单ID |
+| symbol | string | yes | 货币对的符号 |
+| type | string | yes | “limit”或“market” |
+| side | string | yes | “buy”或“sell” |
 
-**Market Order Parameters**
+##### 限价单参数 
 
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
-| amount | string | yes | How much you want to buy or sell |
+| price | string | yes | 买进或卖出价格 |
+| amount | string | yes | 买卖的数量 |
 
-**Response**
-```node
+##### 市价单的参数 
+
+| Name | Type | Required | Description |
+|:- |:- |:- |:- |
+| amount | string | yes | 买卖的数量 |
+
+##### 返回值
+
+```json
 {
   "result": {
     "order_id": "4303100732",
@@ -163,23 +220,26 @@ Request frequency 20 times/2s
   }
 }
 ```
-
+<br/><br/><br/><br/><br/><br/>
 
 ----
-#### Cancel an Order
-Cancel a previously placed order.
+### 取消一个订单 
+
+取消订单。 
+
 > POST spot/my/order/cancel
 
-Request frequency 20 times/2s
+请求频率20次/2s  
 
-**Parameters**
+##### 参数 
 
 | Name | Type | Required | Description |
 |:- |:- |:- |:- |
-| symbol | string | yes | The symbol of the currency pair |
-| order_id | string | yes | The order ID given by /order/place |
+| symbol | string | yes | 货币对的名称 |
+| order_id | string | yes | 订单的ID |
 
-**Response**
+##### 返回值
+
 ```json
 {
   "result": {
@@ -197,23 +257,26 @@ Request frequency 20 times/2s
   }
 }
 ```
-
+<br/><br/><br/><br/><br/><br/>
 
 ----
-#### Get an Order
-Get the information of an order.
+### 获取一个订单 
+
+获取订单信息。 
+
 > GET spot/my/order
 
-Request frequency 10 times/2s
+请求频率10次/2s 
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| order_id | string | yes | The order ID given by /order/place |
+| symbol | string | yes | 货币对的名称 |
+| order_id | string | yes | 订单的ID |
 
-**Response**
+##### 返回值
+
 ```json
 {
   "result": {
@@ -232,22 +295,27 @@ Request frequency 10 times/2s
 }
 ```
 
-#### Get Orders
-Get a list of your orders.
+<br/><br/><br/><br/><br/><br/>
+
+### 获取个人所有订单 
+
+列出你的订单列表。 
+
 > GET spot/my/orders
 
-Request frequency 10 times/2s
+请求频率10次/2s 
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| status | string | no | "active", "finished", "cancelling" or "cancelled" (default is "active") |
-| limit | int | no | Limit the number of records returned (default is 10, max is 100) |
+| symbol | string | yes | 币对的名称 |
+| status | string | no | “active”、“finished”、“cancelling”或者“cancelled”(默认为“active”) |
+| limit | int | no | 每页返回最大记录数(默认值为10，最大值为100) |
 
-**Response**
-```node
+##### 返回值
+
+```json
 {
   "result": [
     {
@@ -263,32 +331,35 @@ Request frequency 10 times/2s
       "status": "active",
       "created_time": 1521142156000
     },
-    ...
+	...
   ]
 }
 ```
-
-
-----
-### Historical Data
+<br/><br/><br/><br/><br/><br/>
 
 ----
-#### Trades
-Get a list of your past trades.
+### 历史成交 
+
+----
+##### 交易 
+
+获取你历史成交的清单 
+
 > GET spot/my/trades
 
-Request frequency 10 times/2s
+请求频率10次/2s 
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| order_id | string | yes | The order ID given by /order/place |
-| limit | int | no | Limit the number of records returned (default is 50, max is 500) |
+| symbol | string | yes | 货币对的名称 |
+| order_id | string | yes | 订单的ID |
+| limit | int | no | 每页返回最大记录数(默认值为50，最大值为500) |
 
-**Response**
-```node
+##### 返回值
+
+```json
 {
   "result": [
     {
@@ -307,24 +378,27 @@ Request frequency 10 times/2s
   ]
 }
 ```
-
-
-----
-## Public Endpoints
+<br/><br/><br/><br/><br/><br/>
 
 ----
-### Ticker
-Get 24 hour statistics for currency pair.
+### 公共接口
+
+----
+#### Ticker
+
+获得24小时货币对的统计数据。 
+
 > GET spot/ticker
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | no | The symbol of the currency pair |
+| symbol | string | no | 货币对的名称。 |
 
-**Response**
-```node
+##### 返回值
+
+``` json
 {
   "result": [
     {
@@ -353,22 +427,27 @@ Get 24 hour statistics for currency pair.
   ]
 }
 ```
-
+<br/><br/><br/><br/><br/><br/>
 
 ----
-### Order Book
-Get a list of active orders for a currency pair.
+### 最新成交价 
+
+获取一个货币对的最新价。 
+
 > GET spot/order_book
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| limit | int | no | Limit the number of records returned (default is 60, max is 200) |
+| symbol | string | yes | 货币对的名称 |
+| limit | int | no | 每页返回最大记录数(默认值为60，最大值为200) |
 
-**Response**
-```node
+
+
+##### 返回值
+
+```json
 {
   "result": {
     "bids": [
@@ -389,19 +468,22 @@ Get a list of active orders for a currency pair.
 <br/><br/><br/><br/><br/><br/>
 
 ----
-### Historical Trades
-Get a list of latest trades for a currency pair.
+### 历史成交 
+
+ 获取一个货币对的最新交易列表。 
+
 > GET spot/trades
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description  |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| limit | int | no | Limit the number of records returned (default is 50, max is 500) |
+| symbol | string | yes | 货币对的名称 |
+| limit | int | no | 每页返回最大记录数(默认值为50，最大值为500) |
 
-**Response**
-```node
+##### 返回值
+
+```json
 {
   "result": [
     // [ time, price, amount, side ]
@@ -411,24 +493,26 @@ Get a list of latest trades for a currency pair.
   ]
 }
 ```
-
+<br/><br/><br/><br/><br/><br/>
 
 ----
-### Candles
-Get a list of candlestick chart data.
+### k线
+获取一份k线数据列表。 
+
 > GET spot/candles
 
-**Parameters**
+##### 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
-| symbol | string | yes | The symbol of the currency pair |
-| period | string | yes | Desired interval like "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "1week" |
+| symbol | string | yes | 货币对的名称。 |
+| period | string | yes | 如 "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day",  "1week" |
 | since | long | no |  |
-| limit | int | no | Limit the number of records returned (default is 200, max is 1000) |
+| limit | int | no | 每页返回最大记录数(默认为200，最大值为1000) |
 
-**Response**
-```node
+##### 返回值
+
+```json
 {
   "result": [
     [
@@ -444,12 +528,12 @@ Get a list of candlestick chart data.
   ]
 }
 ```
-
+<br/><br/><br/><br/><br/><br/>
 
 ----
-## Reference
+### 参考 
 
-### Error Code
+### 错误的请求码
 | Code | Message |
 | :- | :- |
 | 10000 | 必选参数不能为空                             |
