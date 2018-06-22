@@ -1,23 +1,23 @@
-#WebSocket API
+# WebSocket API
 
-##请求与订阅说明
+## 请求与订阅说明
 
-###1. 访问地址
+### 1. 访问地址
 wss://ws.58coin.com/websocket
 
-###2. 参数
+### 2. 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | event | string | yes | 事件名称，如"SUB"订阅，"CANCEL"取消订阅，"CALL"查询最近一次快照 |
 | product | string | yes | 货币对的名称。 |
 | period | string | no | 如 "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day",  "1week" |
-###3. response消息格式
+### 3. response消息格式
 
 返回消息会采用deflate进行压缩,需要 client 在收到数据之后解压;
 其中的订阅、取消时的响应，不会压缩
 
-###4. 接口内容
+### 4. 接口内容
 
 ### ticker
 
@@ -174,7 +174,7 @@ barData k线订阅
 
 ```
 
-###5. 错误消息
+### 5. 错误消息
 
   格式：
   ```
