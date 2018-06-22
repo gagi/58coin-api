@@ -2,24 +2,24 @@
 
 ## 请求与订阅说明
 
-### 1. 访问地址
+## 1. 访问地址
 wss://ws.58coin.com/websocket
 
-### 2. 参数
+## 2. 参数
 
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | event | string | yes | 事件名称，如"SUB"订阅，"CANCEL"取消订阅，"CALL"查询最近一次快照 |
 | product | string | yes | 货币对的名称。 |
 | period | string | no | 如 "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day",  "1week" |
-### 3. response消息格式
+## 3. response消息格式
 
 返回消息会采用deflate进行压缩,需要 client 在收到数据之后解压;
 其中的订阅、取消时的响应，不会压缩
 
-### 4. 接口内容
+## 4. 接口内容
 
-### ticker
+### (1)ticker
 
 获得24小时货币对的统计数据。
 ```
@@ -58,7 +58,7 @@ wss://ws.58coin.com/websocket
 }
 
 ```
-orderBook，深度的订阅
+### (2)orderBook 深度的订阅
 ```
 {
     
@@ -94,7 +94,7 @@ orderBook，深度的订阅
 }
 
 ```
-tradeHistory 最新成交
+### (3)tradeHistory 最新成交
 ```
 {
     
@@ -136,7 +136,7 @@ tradeHistory 最新成交
 }
 
 ```
-barData k线订阅
+### (4)barData k线订阅
 ```
 {
     
