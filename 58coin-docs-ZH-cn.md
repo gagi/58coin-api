@@ -1,3 +1,5 @@
+# [WebSocket API](https://github.com/58COIN/58coin-api/blob/master/58coin-websocket-docs-ZH-cn.md)
+
 # 用于现货交易的58Coin REST API。 
 
 本文件涵盖了58Coin REST api的详细信息，这些api用于访问您的帐户、管理您的订单和检索现货市场数据。 
