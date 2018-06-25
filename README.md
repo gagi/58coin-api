@@ -1,3 +1,5 @@
+# [WebSocket API](https://github.com/58COIN/58coin-api/blob/master/58coin-websocket-docs-en.md)
+
 # 58Coin REST API for Spot Trade
 This document covers the details of 58Coin REST APIs which were used to access your accounts, manage your orders and retrieve spot market data.
 
