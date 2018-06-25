@@ -1,6 +1,10 @@
+# 2018-6-25
+## Feature 
+1. 添加WebSocket API 英文
+
 # 2018-6-22
 ## Feature 
-1. 添加WebSocket API
+1. 添加WebSocket API 中文
 
 # 2018-6-20
 ## Fix
