@@ -421,7 +421,36 @@ None
 
 ----
 ### 公共接口
+----
+#### Ticker Price
 
+获得24小时货币对的最新价格。 
+
+> GET spot/ticker/price
+
+##### 参数
+
+| Name | Type | Required | Description |
+| :- | :- | :- | :- |
+| symbol | string | no | 货币对的名称。 |
+
+##### 返回值
+
+``` json
+{
+  "result": [
+    {
+      "symbol": "LTC_BTC",
+      // The timestamp at which this information was valid
+      "time": 1512744759000,
+      // The price at which the last trade executed
+      "last": "0.019984"
+    },
+    ...
+  ]
+}
+```
+<br/><br/><br/><br/><br/><br/>
 ----
 #### Ticker
 
