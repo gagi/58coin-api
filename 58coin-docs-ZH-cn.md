@@ -348,6 +348,9 @@ None
 | symbol | string | yes | 币对的名称 |
 | status | string | no | “active”、“finished”、“cancelling”或者“cancelled”(默认为“active”) |
 | limit | int | no | 每页返回最大记录数(默认值为10，最大值为100) |
+| page | int | no | 查询订单的当前页 |
+| isHistory | boolean | no | true:查询7天之前的订单(finished和cancelled的时候才有效),false:查询7天之内的订单 |
+
 
 ##### 返回值
 
