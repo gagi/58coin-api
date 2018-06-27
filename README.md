@@ -283,7 +283,7 @@ Request frequency 10 times/2s
 | status | string | no | "active", "finished", "cancelling" or "cancelled" (default is "active") |
 | limit | int | no | Limit the number of records returned (default is 10, max is 100) |
 | page | int | no | The current page when paging |
-| isHistory | boolean | yes | true: query orders before 7 days(Only effective when finish and cancel),false: Inquire for orders within 7 days |
+| isHistory | boolean | no | true: query orders before 7 days(Only effective when finish and cancel),false: Inquire for orders within 7 days |
 
 **Response**
 ```node
