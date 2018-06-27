@@ -350,7 +350,32 @@ Request frequency 10 times/2s
 
 ----
 ## Public Endpoints
+----
+### Ticker Price
+Get 24 hour last price for currency pair.
+> GET spot/ticker/price
 
+**Parameters**
+
+| Name | Type | Required | Description |
+| :- | :- | :- | :- |
+| symbol | string | no | The symbol of the currency pair |
+
+**Response**
+```node
+{
+  "result": [
+    {
+      "symbol": "LTC_BTC",
+      // The timestamp at which this information was valid
+      "time": 1512744759000,
+      // The price at which the last trade executed
+      "last": "0.019984"
+    },
+    ...
+  ]
+}
+```
 ----
 ### Ticker
 Get 24 hour statistics for currency pair.
@@ -462,11 +487,7 @@ Get a list of candlestick chart data.
 | Name | Type | Required | Description |
 | :- | :- | :- | :- |
 | symbol | string | yes | The symbol of the currency pair |
-<<<<<<< HEAD
 | period | string | yes | Desired interval like "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "1week" |
-=======
-| period | string | yes | Desired interval like "1min", "3min", "5min", "15min", "30min", "1hour", "2hour", "4hour", "6hour", "12hour", "1day", "7day" |
->>>>>>> cb163f0256739a9c8c284e80ad867b48ad1d0252
 | since | long | no |  |
 | limit | int | no | Limit the number of records returned (default is 200, max is 1000) |
 
